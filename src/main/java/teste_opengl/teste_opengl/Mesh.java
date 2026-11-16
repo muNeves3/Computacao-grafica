@@ -206,7 +206,7 @@ public class Mesh {
             glBegin(GL_LINE_LOOP);
             for (int idx : face.vertexIndices) {
                 Vertice v = vertices.get(idx);
-                glVertex2d(v.x, v.y);
+                glVertex3d(v.x, v.y, v.z);
             }
             glEnd();
         }
