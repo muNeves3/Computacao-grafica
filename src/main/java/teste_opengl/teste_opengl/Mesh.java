@@ -5,11 +5,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
- 
+
 import static org.lwjgl.opengl.GL11.GL_LINE_LOOP;
 import static org.lwjgl.opengl.GL11.glBegin;
 import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glVertex2d;
+import static org.lwjgl.opengl.GL11.glVertex3d;
 
 class Vertice {
     double x, y, z;
@@ -139,19 +140,19 @@ public class Mesh {
 
     private double[][] matrizTranslacao(double dx, double dy, double dz) {
         return new double[][] {
-            {1, 0, 0, dx},
-            {0, 1, 0, dy},
-            {0, 0, 1, dz},
-            {0, 0, 0, 1}
+                { 1, 0, 0, dx },
+                { 0, 1, 0, dy },
+                { 0, 0, 1, dz },
+                { 0, 0, 0, 1 }
         };
     }
 
     private double[][] matrizEscala(double ex, double ey, double ez) {
         return new double[][] {
-            {ex, 0,  0,  0},
-            {0,  ey, 0,  0},
-            {0,  0,  ez, 0},
-            {0,  0,  0,  1}
+                { ex, 0, 0, 0 },
+                { 0, ey, 0, 0 },
+                { 0, 0, ez, 0 },
+                { 0, 0, 0, 1 }
         };
     }
 
@@ -159,10 +160,10 @@ public class Mesh {
         double rad = Math.toRadians(anguloGraus);
         double c = Math.cos(rad), s = Math.sin(rad);
         return new double[][] {
-            {1, 0,  0, 0},
-            {0, c, -s, 0},
-            {0, s,  c, 0},
-            {0, 0,  0, 1}
+                { 1, 0, 0, 0 },
+                { 0, c, -s, 0 },
+                { 0, s, c, 0 },
+                { 0, 0, 0, 1 }
         };
     }
 
@@ -170,10 +171,10 @@ public class Mesh {
         double rad = Math.toRadians(anguloGraus);
         double c = Math.cos(rad), s = Math.sin(rad);
         return new double[][] {
-            { c, 0, s, 0},
-            { 0, 1, 0, 0},
-            {-s, 0, c, 0},
-            { 0, 0, 0, 1}
+                { c, 0, s, 0 },
+                { 0, 1, 0, 0 },
+                { -s, 0, c, 0 },
+                { 0, 0, 0, 1 }
         };
     }
 
@@ -181,29 +182,29 @@ public class Mesh {
         double rad = Math.toRadians(anguloGraus);
         double c = Math.cos(rad), s = Math.sin(rad);
         return new double[][] {
-            {c, -s, 0, 0},
-            {s,  c, 0, 0},
-            {0,  0, 1, 0},
-            {0,  0, 0, 1}
+                { c, -s, 0, 0 },
+                { s, c, 0, 0 },
+                { 0, 0, 1, 0 },
+                { 0, 0, 0, 1 }
         };
     }
 
     public void aplicarTransformacaoComposta(
-        double dx, double dy, double dz,
-        double angX, double angY, double angZ,
-        double ex, double ey, double ez) {
+            double dx, double dy, double dz,
+            double angX, double angY, double angZ,
+            double ex, double ey, double ez) {
 
         double[][] pivo_origem = matrizTranslacao(-pivo.x, -pivo.y, -pivo.z);
 
         double[][] escala = matrizEscala(ex, ey, ez);
 
         double[][] rotacao = multiplicarMatrizes(matrizRotacaoZ(angZ),
-                        multiplicarMatrizes(matrizRotacaoY(angY), matrizRotacaoX(angX)));
+                multiplicarMatrizes(matrizRotacaoY(angY), matrizRotacaoX(angX)));
 
         double[][] volta_pivo = matrizTranslacao(pivo.x + dx, pivo.y + dy, pivo.z + dz);
 
         double[][] G = multiplicarMatrizes(rotacao, escala);
-        double[][] M = multiplicarMatrizes(volta_pivo, multiplicarMatrizes(G, pivo_origem));    
+        double[][] M = multiplicarMatrizes(volta_pivo, multiplicarMatrizes(G, pivo_origem));
 
         for (Vertice v : vertices) {
             double x = v.x, y = v.y, z = v.z;

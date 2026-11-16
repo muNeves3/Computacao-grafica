@@ -85,6 +85,8 @@ public class LeituraObj {
             double angX = 0.0, angY = 0.0, angZ = 0.0;
             double fatorEscala = 1;
             boolean transformou = false;
+            double fatorTranslacao = 20.0;
+            double anguloRotacao = 20.0;
 
             // Eixo X
             if (GLFW.glfwGetKey(window, GLFW.GLFW_KEY_W) == GLFW.GLFW_PRESS) {
