@@ -16,7 +16,8 @@ public class LeituraObj {
             throw new IllegalStateException("Falha ao inicializar o GLFW");
         }
 
-        long window = GLFW.glfwCreateWindow(1000, 1000, "Teste LWJGL 3", MemoryUtil.NULL, MemoryUtil.NULL);
+        long window = GLFW.glfwCreateWindow(1000, 1000, "Agora eu sou uma imagem 3D!", MemoryUtil.NULL,
+                MemoryUtil.NULL);
         if (window == MemoryUtil.NULL) {
             throw new RuntimeException("Falha ao criar a janela");
         }
@@ -80,6 +81,76 @@ public class LeituraObj {
 
             GL11.glPointSize(8.0f);
             GL11.glColor3f(1.0f, 0.0f, 0.0f);
+
+            double angX = 0.0, angY = 0.0, angZ = 0.0;
+            double fatorEscala = 1;
+            boolean transformou = false;
+
+            // Eixo X
+            if (GLFW.glfwGetKey(window, GLFW.GLFW_KEY_W) == GLFW.GLFW_PRESS) {
+                angX -= anguloRotacao;
+                transformou = true;
+            }
+            if (GLFW.glfwGetKey(window, GLFW.GLFW_KEY_S) == GLFW.GLFW_PRESS) {
+                angX += anguloRotacao;
+                transformou = true;
+            }
+
+            // Eixo Y
+            if (GLFW.glfwGetKey(window, GLFW.GLFW_KEY_A) == GLFW.GLFW_PRESS) {
+                angY -= anguloRotacao;
+                transformou = true;
+            }
+            if (GLFW.glfwGetKey(window, GLFW.GLFW_KEY_D) == GLFW.GLFW_PRESS) {
+                angY += anguloRotacao;
+                transformou = true;
+            }
+
+            // Eixo Z
+            if (GLFW.glfwGetKey(window, GLFW.GLFW_KEY_Q) == GLFW.GLFW_PRESS) {
+                angZ += anguloRotacao;
+                transformou = true;
+            }
+            if (GLFW.glfwGetKey(window, GLFW.GLFW_KEY_E) == GLFW.GLFW_PRESS) {
+                angZ -= anguloRotacao;
+                transformou = true;
+            }
+
+            // Escala
+            if (GLFW.glfwGetKey(window, GLFW.GLFW_KEY_I) == GLFW.GLFW_PRESS) {
+                fatorEscala = 1.02;
+                transformou = true;
+            }
+            if (GLFW.glfwGetKey(window, GLFW.GLFW_KEY_O) == GLFW.GLFW_PRESS) {
+                fatorEscala = 0.98;
+                transformou = true;
+            }
+
+            // Translação
+            double dx = 0.0, dy = 0.0, dz = 0.0;
+            if (GLFW.glfwGetKey(window, GLFW.GLFW_KEY_UP) == GLFW.GLFW_PRESS) {
+                dy += fatorTranslacao;
+                transformou = true;
+            }
+            if (GLFW.glfwGetKey(window, GLFW.GLFW_KEY_DOWN) == GLFW.GLFW_PRESS) {
+                dy -= fatorTranslacao;
+                transformou = true;
+            }
+            if (GLFW.glfwGetKey(window, GLFW.GLFW_KEY_LEFT) == GLFW.GLFW_PRESS) {
+                dx -= fatorTranslacao;
+                transformou = true;
+            }
+            if (GLFW.glfwGetKey(window, GLFW.GLFW_KEY_RIGHT) == GLFW.GLFW_PRESS) {
+                dx += 5.0;
+                transformou = true;
+            }
+
+            if (transformou) {
+                mesh.aplicarTransformacaoComposta(
+                        dx, dy, dz,
+                        angX, angY, angZ,
+                        fatorEscala, fatorEscala, fatorEscala);
+            }
 
             camera.setMatrizModelView();
 
